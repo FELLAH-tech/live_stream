@@ -1,0 +1,27 @@
+{
+  "name": "live",
+  "version": "1.0.0",
+  "description": "live stream",
+  "main": "index.js",
+  "scripts": {
+    "test": "node start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FELLAH-tech/live_stream.git"
+  },
+  "keywords": [
+    "live"
+  ],
+  "author": "Hicham Fellah, Mohamed Ahalli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FELLAH-tech/live_stream/issues"
+  },
+  "homepage": "https://github.com/FELLAH-tech/live_stream#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "webrtc": "^1.14.1",
+    "ws": "^8.11.0"
+  }
+}

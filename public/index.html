@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Streaming</title>
+    <style>
+      /* CSS styles for the layout and design of the web page */
+    </style>
+  </head>
+  <body>
+    <video id="video" autoplay></video>
+  </body>
+  <script>
+    (function(){
+      const pc = new RTCPeerConnection({
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+    });
+
+    pc.onicecandidate = (event) => {
+      if (event.candidate) {
+        // Send the ICE candidate to the signaling server
+        ws.send(JSON.stringify({ type: 'ice', candidate: event.candidate }));
+      }
+    };
+
+    pc.onnegotiationneeded = async () => {
+      // Generate the SDP offer
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+
+      // Send the SDP offer to the signaling server
+      ws.send(JSON.stringify({ type: 'offer', offer }));
+    };
+
+    const videoElement = document.getElementById('video');
+
+    pc.ontrack = (event) => {
+      // Add the remote video stream to the HTML video element
+      videoElement.srcObject = event.streams[0];
+    };
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      // Add the local video stream to the HTML video element
+      videoElement.srcObject = stream;
+
+      // Add the local video stream to the RTCPeerConnection
+      stream.getTracks().forEach((track) => pc.addTrack(track, stream));
+    });
+        
+    })();
+</script>
+</html>
